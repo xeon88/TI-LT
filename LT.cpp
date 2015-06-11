@@ -220,19 +220,23 @@ index_state* decoder(int k, int n , pkts * buffer)
 
             do
             {
-                // setta il valore di grado 1 del pkts
+                // preleva dalla coda il primo pacchetto dello heap grado 1
 
                 pkts first=heap.front();
                 int resolved=first->indexes[0];
 
+                // rendo disponibile il valore al decoder
+
                 if(!decoder_info[resolved]->closed)
                 {
-                    //cout << "Pacchetto di grado 1  risolvo index : " << resolved << "\n";
+
 
                     decoder_info[resolved]->value=first->value;
                     decoder_info[resolved]->ix=resolved;
                     decoder_info[resolved]->closed=true;
                     r++;
+
+                    // risolvo tutti i pacchetti incodati sulla coda dell'indice ix
 
                     list<pkts>::iterator  it = decoder_info[resolved]->heap.begin();
 
@@ -265,7 +269,6 @@ index_state* decoder(int k, int n , pkts * buffer)
 
                 if(!heap.empty() && (*it3)->degree==0 )
                 {
-
 
                     while(!heap.empty() && (heap.front())->degree==0)
                     {
